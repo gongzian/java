@@ -3,20 +3,29 @@
  */
 public class HelloWorld {
     public static void main(String[] args){
-        boolean re=isPalindrome(1234321);
+        HelloWorld helloWorld=new HelloWorld();
+        boolean re=helloWorld.isPalindrome(1234321);
         System.out.println(re);
     }
 
     //Determine whether an integer is a palindrome
-    public static boolean isPalindrome(int x) {
+    public boolean isPalindrome(int x) {
         boolean res=true;
        if(x<0)
            res=false;
        else{
-           String str=String.valueOf(x);
-           for(int i=0; i<str.length()/2; i++){
-               if(str.charAt(i)!=str.charAt(str.length()-i-1))
-                   res = false;
+           int y=1;
+           for(;x/y>=10;y*=10);
+           while(x>0){
+               int l=x/y;
+               int r=x%10;
+               if(l!=r){
+                   res=false;
+                   break;
+               }
+               x%=y;
+               x/=10;
+               y/=100;
            }
        }
        return res;
