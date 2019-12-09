@@ -11,7 +11,22 @@ public class Jdbc {
         Class.forName("com.mysql.cj.jdbc.Driver");
         Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
         Statement stmt = conn.createStatement();
-        ResultSet rs = stmt.executeQuery("SELECT firstname, lastname, city, state from person a, address b where a.personid=b.personid");
+
+        ABCD abcd = new ABCD();
+        abcd.AddSelect("firstname");
+        abcd.AddSelect("lastname");
+        abcd.AddSelect("city");
+        abcd.AddSelect("state");
+
+        abcd.AddFrom("person a");
+        abcd.AddFrom("person b");
+
+        abcd.AddWhere("a.personid=b.personid");
+
+        //System.out.println(abcd.GetSQL());
+
+        ResultSet rs = stmt.executeQuery(abcd.GetSQL());
+        //ResultSet rs = stmt.executeQuery("SELECT firstname, lastname, city, state from person a, address b where a.personid=b.personid");
 
         System.out.println("+-------------+-------------+------------------+----------+");
         System.out.println("|  FirstName  |   LastName  |   City           |  State   |");
@@ -25,5 +40,40 @@ public class Jdbc {
             System.out.println("|");
         }
         System.out.println("+-------------+-------------+------------------+----------+");
+    }
+}
+
+class ABCD{
+
+    String select="SELECT ";
+    String from = " FROM ";
+    String where=" WHERE ";
+
+    void AddSelect(String s){
+        if(select.length()==7){
+            select +=s;
+        }else{
+            select = select + ", " + s;
+        }
+    }
+
+    void AddFrom(String s){
+        if(from.length()==6){
+            from +=s;
+        }else{
+            from = from + ", " + s;
+        }
+    }
+
+    void AddWhere(String s){
+        if(where.length()==7){
+            where +=s;
+        }else{
+            where = where + ", " + s;
+        }
+    }
+
+    String GetSQL(){
+        return select+from+where;
     }
 }
